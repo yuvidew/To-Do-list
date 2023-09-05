@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href=" https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/regular.min.css" integrity="sha512-RvQxwf+3zJuNwl4e0sZjQeX7kUa3o82bDETpgVCH2RiwYSZVDdFJ7N/woNigN/ldyOOoKw8584jM4plQdt8bhA==" crossorigin="anonymous" referrerpolicy="no-referrer" /><script src="https://kit.fontawesome.com/f7fe29f0bc.js" crossorigin="anonymous"></script>
+    <link rel="icon" href="listicon2.png" type="image/png">
+    <title>To Do list</title>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;500;600&display=swap");
+        * {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            outline: none;
+            border: none;
+            text-decoration: none;
+            -webkit-transition: .2s linear;
+            transition: .2s linear;
+        }
+
+        input::placeholder{
+            color: #4a4b4b;
+        }
+
+        html {
+            font-size: 62.5%;
+        }
+        body{
+            background: #025b76;
+        }
+
+        button{
+            cursor: pointer;
+        }
+        section{
+            width: 35rem;
+            position: absolute;
+            top: 35%;
+            left:50%;
+            transform: translate(-50%, -50%);
+            background-color: #eaf3f3;
+            border-radius: .3rem;
+        }
+
+        .inputbox{
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            width: 86%;
+            margin: auto;
+            margin-top: 1.5rem;
+            padding: 0 1.3rem;
+            border: .1px solid #9d9e9e;
+            
+        }
+
+        .inputbox .inpbtn{
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: .6rem 0;
+        }
+
+        .inputbox i{
+            font-size: 1.5rem;
+            color: #9d9e9e;
+        }
+        
+        .inputbox .inpbtn input{
+            background: transparent;
+        }
+
+        .inputbox .inpbtn button{
+            cursor: pointer;
+            height: 3rem;
+            width: 23%;
+            border-radius: .3rem;
+            color: #eaf3f3;
+            background-color: #025b76;
+
+        }
+
+        .btnbox{
+            padding: 0 2rem;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            /* justify-content: space-between; */
+            gap: 2rem;
+        }
+        .btnbox button{
+            background: none;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btnbox button.colo
+
+        #box4{
+            cursor: pointer;
+            height: 3rem;
+            font-size: 1.3rem;
+            width: 25%;
+            border-radius: .3rem;
+            color: #eaf3f3;
+            background-color: #025b76;
+        }
+
+        #foter{
+            text-align: center;
+            margin-bottom: 1.5rem;
+            margin-top: 1.5rem;
+            font-size: 1.3rem;
+        }
+        .line{
+            height: .08rem;
+            width: 100%;
+            background: #8c8d8d;
+        }
+
+        .taskpage{
+            width: 90%;
+            margin: auto;
+        }
+        
+        .taskpage > div{
+            background: #eaf3f3;
+            width: 100%;
+            display: none;
+            margin: 1rem 0;
+        }
+
+        .taskpage div.active{
+            display: block;
+        }
+
+        .task{
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            width: 100%;
+            margin:1rem auto;
+            padding: 2rem;
+            border-bottom: .1px solid #7f8181;
+        }
+
+        .task input{
+            accent-color: #025b76;
+            cursor: pointer;
+        }
+
+        .task input:checked~ .perabtn h1{
+            text-decoration: line-through;
+            color: #7f8181;
+        }
+
+        .task .perabtn{
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .task .perabtn h1{
+            font-weight: 400;
+            width: 60%;
+        }
+
+        .complitedtask{
+            width: 90%;
+            border: 2px solid black;
+            margin:1rem auto;
+            font-size: 1.5rem;
+        }
+
+        .btn2{
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            justify-content: center;
+            padding: .7rem;
+            /* width: 25%; */
+            border-radius: .3rem;
+            color: #eaf3f3;
+            background-color: #025b76;
+        }
+
+        .colo{
+            color: #025b76;
+        }
+    </style>
+</head>
+<body>
+    <section>
+        <div class="inputbox">
+            <i class="fa-solid fa-list"></i>
+            <div class="inpbtn">
+                <input type="text" placeholder="Add a new task" id="inputbar">
+                <button onclick="addtaskbtn()">Add</button>
+            </div>
+        </div>
+        <div class="btnbox">
+            <button id="box1" class="All ">Task <p id="p"></p></button>
+            <button id="box3" class="Completed">Completed Task</button>
+            &nbsp;
+        </div>
+        <div class="line"></div>
+        <div class="taskpage">
+            <div class="All active" id="alllist"></div>
+            <div class="Completed" id="copmlist"></div>
+        </div>
+        <div id="foter">
+            You don't have any task here
+        </div>
+    </section>
+    <script>
+        const inputbar = document.getElementById("inputbar");
+        const alllist = document.getElementById("alllist");
+        const copmlist = document.getElementById("copmlist");
+        const foter = document.getElementById("foter")
+        const listtask = [];
+        const comptasklist = [];
+        
+        const p = document.getElementById("p")
+        
+        const addtaskbtn = () =>{
+            let inputval = inputbar.value ;
+            if(inputval.length > 0){
+                listtask.push(inputval)
+                createtask()
+            }
+            if(listtask.length === 0){
+                foter.innerHTML = "You don't have any task here"
+                console.log("yuvi")
+            }
+        }
+        
+        
+        const createtask = () =>{
+            p.innerHTML = listtask.length 
+            let alldata = " "
+            listtask.forEach((val, index) => {
+                alldata += `<div class="task">
+                                <div class="perabtn">
+                                    <h1 onclick = "comptask(${index})">${val}</h1>
+                                    <button class = "btn2" onclick="delettask(${index})"><i class = "fa fa-trash"></i></button>
+                                </div>
+                            </div>`
+            })
+
+            alllist.innerHTML  = alldata
+            foter.innerHTML = " "
+        }
+        
+        const delettask = (index) =>{
+            listtask.splice(index, 1)
+            console.log(listtask)
+            createtask()
+            
+        }
+        
+        const comptask = (index) =>{
+            comptasklist.push(listtask[index])
+            
+            let copmdata = ""
+
+            comptasklist.forEach((val, index) =>{
+                copmdata += `
+                            <div class="task">
+                                <input type="checkbox" checked >
+                                <div class="perabtn">
+                                    <h1 onclick = "removecop(${index})">${val}</h1>
+                                    <button class = "btn2" onclick="deletcop(${index})"><i class = "fa fa-trash"></i></button>
+                                </div>
+                            </div>`
+            })
+
+            copmlist.innerHTML = copmdata
+            listtask.splice(index, 1)
+            createtask()
+        }
+
+        const deletcop = (index) =>{
+            comptasklist.splice(index, 1)
+        }
+        
+        const removecop = (index) =>{
+            listtask.push(comptasklist[index])
+            createtask()
+        }
+
+        const btnbox = document.querySelectorAll(".btnbox button");
+        const taskpage = document.querySelectorAll(".taskpage div");
+        btnbox.forEach(btn => {
+            btn.addEventListener("click", (e) =>{
+                taskpage.forEach(page =>{
+                    if(e.target.className === page.className){
+                        page.classList.add("active")
+                        e.target.classList.add("colo")
+                    }else{
+                        page.classList.remove("active")
+                        e.target.classList.remove("colo")
+                    } 
+                })
+            })
+        })
+    </script>
+</body>
+</html>
