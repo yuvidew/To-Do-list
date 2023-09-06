@@ -1,322 +1,363 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- Coding By CodingNepal - youtube.com/codingnepal -->
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">  
+    <title>Todo List App in JavaScript | CodingNepal</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Iconscout Link For Icons -->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href=" https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/regular.min.css" integrity="sha512-RvQxwf+3zJuNwl4e0sZjQeX7kUa3o82bDETpgVCH2RiwYSZVDdFJ7N/woNigN/ldyOOoKw8584jM4plQdt8bhA==" crossorigin="anonymous" referrerpolicy="no-referrer" /><script src="https://kit.fontawesome.com/f7fe29f0bc.js" crossorigin="anonymous"></script>
-    <link rel="icon" href="https://png.pngtree.com/png-vector/20190622/ourlarge/pngtree-checklistcheckexpertiselistclipboard-flat-color-icon-vec-png-image_1490531.jpg" type="image/png">
-    <title>To Do list</title>
+    <link rel="icon" href="listicon2.png" type="image/png">
     <style>
-        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;500;600&display=swap");
-        * {
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            padding: 0;
-            -webkit-box-sizing: border-box;
-            box-sizing: border-box;
-            outline: none;
-            border: none;
-            text-decoration: none;
-            -webkit-transition: .2s linear;
-            transition: .2s linear;
-        }
+        /* Import Google Font - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+body{
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background: linear-gradient(135deg, #4AB1FF, #2D5CFE);
+}
+::selection{
+  color: #fff;
+  background: #3C87FF;
+}
+.wrapper{
+  max-width: 405px;
+  padding: 28px 0 30px;
+  margin: 137px auto;
+  background: #fff;
+  border-radius: 7px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+.task-input{
+  height: 52px;
+  padding: 0 25px;
+  position: relative;
+}
+.task-input i{
+  top: 50%;
+  position: absolute;
+  transform: translate(17px, -50%);
+}
+.task-input input{
+  height: 100%;
+  width: 100%;
+  outline: none;
+  font-size: 18px;
+  border-radius: 5px;
+  padding: 0 20px 0 53px;
+  border: 1px solid #999;
+}
+.task-input input:focus,
+.task-input input.active{
+  padding-left: 52px;
+  border: 2px solid #3C87FF;
+}
+.task-input input::placeholder{
+  color: #bfbfbf;
+}
+.controls, li{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.controls{
+  padding: 18px 25px;
+  border-bottom: 1px solid #ccc;
+}
+.filters span{
+  margin: 0 8px;
+  font-size: 17px;
+  color: #444444;
+  cursor: pointer;
+}
+.filters span:first-child{
+  margin-left: 0;
+}
+.filters span.active{
+  color: #3C87FF;
+}
+.controls .clear-btn{
+  border: none;
+  opacity: 0.6;
+  outline: none;
+  color: #fff;
+  cursor: pointer;
+  font-size: 13px;
+  padding: 7px 13px;
+  border-radius: 4px;
+  letter-spacing: 0.3px;
+  pointer-events: none;
+  transition: transform 0.25s ease;
+  background: linear-gradient(135deg, #1798fb 0%, #2D5CFE 100%);
+}
+.clear-btn.active{
+  opacity: 0.9;
+  pointer-events: auto;
+}
+.clear-btn:active{
+  transform: scale(0.93);
+}
+.task-box{
+  margin-top: 20px;
+  margin-right: 5px;
+  padding: 0 20px 10px 25px;
+}
+.task-box.overflow{
+  overflow-y: auto;
+  max-height: 300px;
+}
+.task-box::-webkit-scrollbar{
+  width: 5px;
+}
+.task-box::-webkit-scrollbar-track{
+  background: #f1f1f1;
+  border-radius: 25px;
+}
+.task-box::-webkit-scrollbar-thumb{
+  background: #e6e6e6;
+  border-radius: 25px;
+}
+.task-box .task{
+  list-style: none;
+  font-size: 17px;
+  margin-bottom: 18px;
+  padding-bottom: 16px;
+  align-items: flex-start;
+  border-bottom: 1px solid #ccc;
+}
+.task-box .task:last-child{
+  margin-bottom: 0;
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+.task-box .task label{
+  display: flex;
+  align-items: flex-start;
+}
+.task label input{
+  margin-top: 7px;
+  accent-color: #3C87FF;
+}
+.task label p{
+  user-select: none;
+  margin-left: 12px;
+  word-wrap: break-word;
+}
+.task label p.checked{
+  text-decoration: line-through;
+}
+.task-box .settings{
+  position: relative;
+}
+.settings :where(i, li){
+  cursor: pointer;
+}
+.settings .task-menu{
+  z-index: 10;
+  right: -5px;
+  bottom: -65px;
+  padding: 5px 0;
+  background: #fff;
+  position: absolute;
+  border-radius: 4px;
+  transform: scale(0);
+  transform-origin: top right;
+  box-shadow: 0 0 6px rgba(0,0,0,0.15);
+  transition: transform 0.2s ease;
+}
+.task-box .task:last-child .task-menu{
+  bottom: 0;
+  transform-origin: bottom right;
+}
+.task-box .task:first-child .task-menu{
+  bottom: -65px;
+  transform-origin: top right;
+}
+.task-menu.show{
+  transform: scale(1);
+}
+.task-menu li{
+  height: 25px;
+  font-size: 16px;
+  margin-bottom: 2px;
+  padding: 17px 15px;
+  cursor: pointer;
+  justify-content: flex-start;
+}
+.task-menu li:last-child{
+  margin-bottom: 0;
+}
+.settings li:hover{
+  background: #f5f5f5;
+}
+.settings li i{
+  padding-right: 8px;
+}
 
-        input::placeholder{
-            color: #4a4b4b;
-        }
-
-        html {
-            font-size: 62.5%;
-        }
-        body{
-            background: #025b76;
-        }
-
-        button{
-            cursor: pointer;
-        }
-        section{
-            width: 35rem;
-            position: absolute;
-            top: 35%;
-            left:50%;
-            transform: translate(-50%, -50%);
-            background-color: #eaf3f3;
-            border-radius: .3rem;
-        }
-
-        .inputbox{
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            width: 86%;
-            margin: auto;
-            margin-top: 1.5rem;
-            padding: 0 1.3rem;
-            border: .1px solid #9d9e9e;
-            
-        }
-
-        .inputbox .inpbtn{
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: .6rem 0;
-        }
-
-        .inputbox i{
-            font-size: 1.5rem;
-            color: #9d9e9e;
-        }
-        
-        .inputbox .inpbtn input{
-            background: transparent;
-        }
-
-        .inputbox .inpbtn button{
-            cursor: pointer;
-            height: 3rem;
-            width: 23%;
-            border-radius: .3rem;
-            color: #eaf3f3;
-            background-color: #025b76;
-
-        }
-
-        .btnbox{
-            padding: 0 2rem;
-            margin-top: 2rem;
-            margin-bottom: 2rem;
-            display: flex;
-            align-items: center;
-            /* justify-content: space-between; */
-            gap: 2rem;
-        }
-        .btnbox button{
-            background: none;
-            display: flex;
-            gap: 1rem;
-        }
-
-        .btnbox button.colo
-
-        #box4{
-            cursor: pointer;
-            height: 3rem;
-            font-size: 1.3rem;
-            width: 25%;
-            border-radius: .3rem;
-            color: #eaf3f3;
-            background-color: #025b76;
-        }
-
-        #foter{
-            text-align: center;
-            margin-bottom: 1.5rem;
-            margin-top: 1.5rem;
-            font-size: 1.3rem;
-        }
-        .line{
-            height: .08rem;
-            width: 100%;
-            background: #8c8d8d;
-        }
-
-        .taskpage{
-            width: 90%;
-            margin: auto;
-        }
-        
-        .taskpage > div{
-            background: #eaf3f3;
-            width: 100%;
-            display: none;
-            margin: 1rem 0;
-        }
-
-        .taskpage div.active{
-            display: block;
-        }
-
-        .task{
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 3rem;
-            width: 100%;
-            margin:1rem auto;
-            padding: 2rem;
-            border-bottom: .1px solid #7f8181;
-        }
-
-        .task input{
-            accent-color: #025b76;
-            cursor: pointer;
-        }
-
-        .task input:checked~ .perabtn h1{
-            text-decoration: line-through;
-            color: #7f8181;
-        }
-
-        .task .perabtn{
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .task .perabtn h1{
-            font-weight: 400;
-            width: 60%;
-        }
-
-        .complitedtask{
-            width: 90%;
-            border: 2px solid black;
-            margin:1rem auto;
-            font-size: 1.5rem;
-        }
-
-        .btn2{
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-            justify-content: center;
-            padding: .7rem;
-            /* width: 25%; */
-            border-radius: .3rem;
-            color: #eaf3f3;
-            background-color: #025b76;
-        }
-
-        .colo{
-            color: #025b76;
-        }
-        @media (max-width:600px) {
-            section{
-                width: 40rem;
-            }
-        }
+@media (max-width: 400px) {
+  body{
+    padding: 0 10px;
+  }
+  .wrapper {
+    padding: 20px 0;
+  }
+  .filters span{
+    margin: 0 5px;
+  }
+  .task-input{
+    padding: 0 20px;
+  }
+  .controls{
+    padding: 18px 20px;
+  }
+  .task-box{
+    margin-top: 20px;
+    margin-right: 5px;
+    padding: 0 15px 10px 20px;
+  }
+  .task label input{
+    margin-top: 4px;
+  }
+}
     </style>
-</head>
-<body>
-    <section>
-        <div class="inputbox">
-            <i class="fa-solid fa-list"></i>
-            <div class="inpbtn">
-                <input type="text" placeholder="Add a new task" id="inputbar">
-                <button onclick="addtaskbtn()">Add</button>
-            </div>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="task-input">
+        <i class="fa-solid fa-list"></i>
+        <input type="text" placeholder="Add a new task">
+      </div>
+      <div class="controls">
+        <div class="filters">
+          <span class="active" id="all">All</span>
+          <span id="pending">Pending</span>
+          <span id="completed">Completed</span>
         </div>
-        <div class="btnbox">
-            <button id="box1" class="All ">Task <p id="p"></p></button>
-            <button id="box3" class="Completed">Completed Task</button>
-            &nbsp;
-        </div>
-        <div class="line"></div>
-        <div class="taskpage">
-            <div class="All active" id="alllist"></div>
-            <div class="Completed" id="copmlist"></div>
-        </div>
-        <div id="foter">
-            You don't have any task here
-        </div>
-    </section>
+        <button class="clear-btn">Clear All</button>
+      </div>
+      <ul class="task-box"></ul>
+    </div>
+
     <script>
-        const inputbar = document.getElementById("inputbar");
-        const alllist = document.getElementById("alllist");
-        const copmlist = document.getElementById("copmlist");
-        const foter = document.getElementById("foter")
-        const listtask = [];
-        const comptasklist = [];
-        
-        const p = document.getElementById("p")
-        
-        const addtaskbtn = () =>{
-            let inputval = inputbar.value ;
-            if(inputval.length > 0){
-                listtask.push(inputval)
-                createtask()
+        const taskInput = document.querySelector(".task-input input"),
+filters = document.querySelectorAll(".filters span"),
+clearAll = document.querySelector(".clear-btn"),
+taskBox = document.querySelector(".task-box");
+
+let editId,
+isEditTask = false,
+todos = JSON.parse(localStorage.getItem("todo-list"));
+
+filters.forEach(btn => {
+    btn.addEventListener("click", () => {
+        document.querySelector("span.active").classList.remove("active");
+        btn.classList.add("active");
+        showTodo(btn.id);
+    });
+});
+
+function showTodo(filter) {
+    let liTag = "";
+    if(todos) {
+        todos.forEach((todo, id) => {
+            let completed = todo.status == "completed" ? "checked" : "";
+            if(filter == todo.status || filter == "all") {
+                liTag += `<li class="task">
+                            <label for="${id}">
+                                <input onclick="updateStatus(this)" type="checkbox" id="${id}" ${completed}>
+                                <p class="${completed}">${todo.name}</p>
+                            </label>
+                            <div class="settings">
+                                <i onclick="showMenu(this)" class="uil uil-ellipsis-h"></i>
+                                <ul class="task-menu">
+                                    <li onclick='editTask(${id}, "${todo.name}")'><i class="fa-solid fa-pen"></i>Edit</li>
+                                    <li onclick='deleteTask(${id}, "${filter}")'> <i class = "fa fa-trash"></i>Delete</li>
+                                </ul>
+                            </div>
+                        </li>`;
             }
-            if(listtask.length === 0){
-                foter.innerHTML = "You don't have any task here"
-                console.log("yuvi")
-            }
-        }
-        
-        
-        const createtask = () =>{
-            p.innerHTML = listtask.length 
-            let alldata = " "
-            listtask.forEach((val, index) => {
-                alldata += `<div class="task">
-                                <div class="perabtn">
-                                    <h1 onclick = "comptask(${index})">${val}</h1>
-                                    <button class = "btn2" onclick="delettask(${index})"><i class = "fa fa-trash"></i></button>
-                                </div>
-                            </div>`
-            })
+        });
+    }
+    taskBox.innerHTML = liTag || `<span>You don't have any task here</span>`;
+    let checkTask = taskBox.querySelectorAll(".task");
+    !checkTask.length ? clearAll.classList.remove("active") : clearAll.classList.add("active");
+    taskBox.offsetHeight >= 300 ? taskBox.classList.add("overflow") : taskBox.classList.remove("overflow");
+}
+showTodo("all");
 
-            alllist.innerHTML  = alldata
-            foter.innerHTML = " "
+function showMenu(selectedTask) {
+    let menuDiv = selectedTask.parentElement.lastElementChild;
+    menuDiv.classList.add("show");
+    document.addEventListener("click", e => {
+        if(e.target.tagName != "I" || e.target != selectedTask) {
+            menuDiv.classList.remove("show");
         }
-        
-        const delettask = (index) =>{
-            listtask.splice(index, 1)
-            console.log(listtask)
-            createtask()
-            
-        }
-        
-        const comptask = (index) =>{
-            comptasklist.push(listtask[index])
-            
-            let copmdata = ""
+    });
+}
 
-            comptasklist.forEach((val, index) =>{
-                copmdata += `
-                            <div class="task">
-                                <input type="checkbox" checked >
-                                <div class="perabtn">
-                                    <h1 onclick = "removecop(${index})">${val}</h1>
-                                    <button class = "btn2" onclick="deletcop(${index})"><i class = "fa fa-trash"></i></button>
-                                </div>
-                            </div>`
-            })
+function updateStatus(selectedTask) {
+    let taskName = selectedTask.parentElement.lastElementChild;
+    if(selectedTask.checked) {
+        taskName.classList.add("checked");
+        todos[selectedTask.id].status = "completed";
+    } else {
+        taskName.classList.remove("checked");
+        todos[selectedTask.id].status = "pending";
+    }
+    localStorage.setItem("todo-list", JSON.stringify(todos))
+}
 
-            copmlist.innerHTML = copmdata
-            listtask.splice(index, 1)
-            createtask()
-        }
+function editTask(taskId, textName) {
+    editId = taskId;
+    isEditTask = true;
+    taskInput.value = textName;
+    taskInput.focus();
+    taskInput.classList.add("active");
+}
 
-        const deletcop = (index) =>{
-            comptasklist.splice(index, 1)
-        }
-        
-        const removecop = (index) =>{
-            listtask.push(comptasklist[index])
-            createtask()
-        }
+function deleteTask(deleteId, filter) {
+    isEditTask = false;
+    todos.splice(deleteId, 1);
+    localStorage.setItem("todo-list", JSON.stringify(todos));
+    showTodo(filter);
+}
 
-        const btnbox = document.querySelectorAll(".btnbox button");
-        const taskpage = document.querySelectorAll(".taskpage div");
-        btnbox.forEach(btn => {
-            btn.addEventListener("click", (e) =>{
-                taskpage.forEach(page =>{
-                    if(e.target.className === page.className){
-                        page.classList.add("active")
-                        e.target.classList.add("colo")
-                    }else{
-                        page.classList.remove("active")
-                        e.target.classList.remove("colo")
-                    } 
-                })
-            })
-        })
+clearAll.addEventListener("click", () => {
+    isEditTask = false;
+    todos.splice(0, todos.length);
+    localStorage.setItem("todo-list", JSON.stringify(todos));
+    showTodo()
+});
+
+taskInput.addEventListener("keyup", e => {
+    let userTask = taskInput.value.trim();
+    if(e.key == "Enter" && userTask) {
+        if(!isEditTask) {
+            todos = !todos ? [] : todos;
+            let taskInfo = {name: userTask, status: "pending"};
+            todos.push(taskInfo);
+        } else {
+            isEditTask = false;
+            todos[editId].name = userTask;
+        }
+        taskInput.value = "";
+        localStorage.setItem("todo-list", JSON.stringify(todos));
+        showTodo(document.querySelector("span.active").id);
+    }
+});
     </script>
-</body>
+
+  </body>
 </html>
